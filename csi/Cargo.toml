@@ -1,0 +1,39 @@
+[package]
+name = "csi"
+version = "0.1.0"
+edition = "2021"
+authors = ["Embers-of-the-Fire <stellarishs@163.com>"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/Embers-of-the-Fire/csi-rs.git"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+cfg-if = "1.0.0"
+gcd = "2.3.0"
+
+[features]
+default = ["exported_types", "alias_export"]
+full = ["all_types", "internal_macros", "internal_utils"]
+# types
+all_types = ["exported_types", "associated_types"]
+associated_types = []
+exported_types = []
+# types-export
+alias_export = []
+alias_mod = []
+alias_hidden = []
+# bypass alias restrictions
+alias_bypass = []
+# utils
+internal_utils = ["fraction"]
+fraction = []
+# macros
+internal_macros = ["typedef_macros", "util_macros"]
+typedef_macros = []
+util_macros = []
+# nightly-only
+nightly_full = ["infer_cast", "nightly"]
+nightly = []
+infer_cast = []
