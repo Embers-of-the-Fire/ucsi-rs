@@ -103,6 +103,18 @@
 //! 
 //! If you want to create your well-defined special type or associated unit,
 //! see the [`macros`] module for some code generator.
+//! 
+//! ## External crate feature
+//! 
+//! ### `const_soft_float`
+//! 
+//! Disabled by default, included in the `full` feature.
+//! 
+//! This library re-exports the
+//! [`const_soft_float`](https://docs.rs/crate/const_soft_float/0.1.4)
+//! crate's constant float mathematical operations,
+//! and the lib's standard associated units offer constant
+//! conversion method for those types.
 
 #![allow(clippy::module_inception)]
 
@@ -123,10 +135,19 @@ pub mod macros;
 #[cfg(not(feature = "internal_macros"))]
 mod macros;
 
+use cfg_if::cfg_if;
+
 // re-export
 pub use crate::core::units::any::{SiAnyUnit, SiDefinedUnit};
 pub use crate::core::value::Value;
 pub use crate::core::{ops, units};
+
+cfg_if! {
+    if #[cfg(feature = "const_soft_float")] {
+        pub use const_soft_float::soft_f32::SoftF32;
+        pub use const_soft_float::soft_f64::SoftF64;
+    }
+}
 
 // feature error
 mod feature_error {

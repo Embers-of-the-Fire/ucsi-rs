@@ -1,23 +1,23 @@
 //! # The `value` module
-//! 
+//!
 //! The core functionality of this module is the [`Value`][crate::Value] struct.
 //! It works as a wrapper that saves the unit information at **compile time**
 //! and theoretically zero-cost.
-//! 
+//!
 //! ## Example
-//! 
+//!
 //! > The following example is the same as [the library-level documentation][crate],
 //! you can skip them if you've already read the library-level document.
-//! 
+//!
 //! ```rust
 //! use csi::units::base::{kg, m, s};
 //! use csi::unit;
 //! use csi::Value;
-//! 
+//!
 //! // create your new unit
 //! // see the `unit` macro or `csi::core::ops` for more information.
 //! type Newton = unit!((kg * m) / (s ** { 2 }));
-//! 
+//!
 //! // build some value
 //! // `Value<value_type, value_unit>`
 //! let speed: Value<f64, unit!(m / s)> = Value::new(10.0);
@@ -33,11 +33,11 @@
 //!     // If your value is not copy-able, use `cast` instead.
 //!     force.cast_const();
 //! ```
-//! 
+//!
 //! Thanks to rust's const evaluation, the type-casting is **compile-time checked**!
-//! 
+//!
 //! To clearify the type-casting check, consider the following example:
-//! 
+//!
 //! ```rust,compile_fail
 //! # use csi::units::base::{kg, m, s};
 //! # use csi::unit;
@@ -50,18 +50,18 @@
 //! # let force = acc * mass;
 //! let s_can_never_be_newton: Value<_, s> = force.cast_const();
 //! ```
-//! 
+//!
 //! The example above cannot compile, and will throw some error like this:
-//! 
+//!
 //! ```plain
-//! error[E0080]: evaluation of `<Second as CastFrom<csi::ops::Mul<csi::ops::Div<csi::ops::Div<Meter, Second>, Second>, 
+//! error[E0080]: evaluation of `<Second as CastFrom<csi::ops::Mul<csi::ops::Div<csi::ops::Div<Meter, Second>, Second>,
 //! Kilogram>>>::CAN_CAST_FROM` failed
 //! --> D:\WBH\rust\csi\csi\src\core\units\any.rs:25:9
 //!    |
 //! 25 |         panic!("cannot cast si type")
 //!    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the evaluated program panicked at 'cannot cast si type', D:\WBH\rust\csi\csi\src\core\units\any.rs:25:9
 //!    |
-//! note: inside `is_same_type_or_panic::<csi::ops::Mul<csi::ops::Div<csi::ops::Div<Meter, Second>, Second>, Kilogram>, 
+//! note: inside `is_same_type_or_panic::<csi::ops::Mul<csi::ops::Div<csi::ops::Div<Meter, Second>, Second>, Kilogram>,
 //! Second>`
 //! --> D:\WBH\rust\csi\csi\src\core\units\any.rs:25:9
 //!    |
@@ -73,16 +73,16 @@
 //! 36 |         is_same_type_or_panic::<T, B>();
 //!    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 //!  = note: this error originates in the macro `$crate::panic::panic_2021` which comes from the expansion of the macro `panic` (in Nightly builds, run with -Z macro-backtrace for more info)
-//! 
+//!
 //! note: the above error was encountered while instantiating `fn csi::Value::<f64, csi::ops::Mul<csi::ops::Div<csi::ops::Div<csi::units::base::Meter, csi::units::base::Second>, csi::units::base::Second>, csi::units::base::Kilogram>>::cast_const::<csi::units::base::Second>`
 //! --> csi-test\tests\test_ops.rs:26:25
 //!    |
 //! 26 |     let s_can_never_be_newton: Value<_, s> = force.cast_const();
 //!    |                                              ^^^^^^^^^^^^^^^^^^
-//! 
+//!
 //! For more information about this error, try `rustc --explain E0080`.
 //! ```
-//! 
+//!
 //! Well, there's probably a little bit of a lot of information that's being reported.
 //! Since rust's const evaluation and generic system is still under rapid development,
 //! this could be improved in the future. \
@@ -112,7 +112,7 @@ impl<T: SiAnyUnit, V: Clone> Clone for Value<V, T> {
     fn clone(&self) -> Self {
         Self {
             value: self.value.clone(),
-            _t: PhantomData
+            _t: PhantomData,
         }
     }
 
@@ -251,13 +251,13 @@ macro_rules! __impl_int_ops {
             }
 
             #[inline]
-            pub const fn pmul(mut self, rhs: $ty) -> Value<$ty, T> {
+            pub const fn cmul(mut self, rhs: $ty) -> Value<$ty, T> {
                 self.value *= rhs;
                 self
             }
 
             #[inline]
-            pub const fn pdiv(mut self, rhs: $ty) -> Value<$ty, T> {
+            pub const fn cdiv(mut self, rhs: $ty) -> Value<$ty, T> {
                 self.value /= rhs;
                 self
             }
@@ -274,6 +274,18 @@ macro_rules! __impl_float_ops {
     ($ty:ty) => {
         impl<T: SiAnyUnit> Value<$ty, T> {
             #[inline]
+            pub fn padd(mut self, rhs: Value<$ty, T>) -> Value<$ty, T> {
+                self.value += rhs.value;
+                self
+            }
+
+            #[inline]
+            pub fn psub(mut self, rhs: Value<$ty, T>) -> Value<$ty, T> {
+                self.value -= rhs.value;
+                self
+            }
+
+            #[inline]
             pub fn pmul(mut self, rhs: $ty) -> Value<$ty, T> {
                 self.value *= rhs;
                 self
@@ -288,8 +300,42 @@ macro_rules! __impl_float_ops {
     };
 }
 
+#[cfg(feature = "const_soft_float")]
+macro_rules! __impl_const_float_ops {
+    ($($ty:ty),*) => {
+        $(
+            impl<T: SiAnyUnit> Value<$ty, T> {
+                #[inline]
+                pub const fn cadd(self, rhs: Self) -> Self {
+                    Self::new(self.value.add(rhs.value))
+                }
+
+                #[inline]
+                pub const fn csub(self, rhs: Self) -> Self {
+                    Self::new(self.value.sub(rhs.value))
+                }
+
+                #[inline]
+                pub const fn cmul(self, rhs: $ty) -> Self {
+                    Self::new(self.value.mul(rhs))
+                }
+
+                #[inline]
+                pub const fn cdiv(self, rhs: $ty) -> Self {
+                    Self::new(self.value.div(rhs))
+                }
+            }
+        )*
+    };
+}
+
 __impl_int_ops!(u8, u16, u32, u64, u128, i8, i16, i32, i64, i128, usize, isize);
 __impl_float_ops!(f32, f64);
+#[cfg(feature = "const_soft_float")]
+__impl_const_float_ops!(
+    const_soft_float::soft_f32::SoftF32,
+    const_soft_float::soft_f64::SoftF64
+);
 
 impl<T: SiAnyUnit + SiOpsUnit, V: ops::Add<L>, L> ops::Add<Value<L, T>> for Value<V, T> {
     type Output = Value<V::Output, T>;

@@ -17,31 +17,35 @@
 macro_rules! __impl_unit_conversion {
     {
         $($ty:ty {
-            $($($idt:ident)? ($($ity:ty),+) $block_tt:tt;)*
+            $($($idt:ident)? ($($(#[$attr:meta])* $ity:ty),+) $block_tt:tt;)*
         };)*
     } => {
-        $($($crate::__impl_unit_conversion! {$ty| $($idt)? ($($ity),+) $block_tt})*)*
+        $($(
+            $crate::__impl_unit_conversion! {$ty| $($idt)? ($($(#[$attr])* $ity),+) $block_tt}
+        )*)*
     };
-
-    // internal impl
     
-    ($ty:ty| const ($($impl_ty:ty),+) $block_tt:tt) => {
+    ($ty:ty| const ($($(#[$attr:meta])* $impl_ty:ty),+) $block_tt:tt) => {
         $($crate::__impl_unit_conversion! {
+            $(#[$attr])* 
             @const $impl_ty as $ty $block_tt
         })+
     };
-    ($ty:ty| ($($impl_ty:ty),+) $block_tt:tt) => {
+    ($ty:ty| ($($(#[$attr:meta])* $impl_ty:ty),+) $block_tt:tt) => {
         $($crate::__impl_unit_conversion! {
+            $(#[$attr])* 
             @ $impl_ty as $ty $block_tt
         })+
     };
 
     (
+        $(#[$attr:meta])* 
         @$($idt:ident)? $vtype:ty as $unit:ty {
             from: |$idtf:ident| $blockf:block,
             to: |$idtt:ident| $blockt:block $(,)?
         }
     ) => {
+        $(#[$attr])* 
         impl $crate::core::value::Value<$vtype, $unit> {
             pub $($idt)? fn to_metric(self)
                 -> $crate::core::value::Value<
@@ -72,11 +76,13 @@ macro_rules! __impl_unit_conversion {
         }
     };
     (
+        $(#[$attr:meta])* 
         @$($idt:ident)? $vtype:ty as $unit:ty {
             to: |$idtt:ident| $blockt:block,
             from: |$idtf:ident| $blockf:block $(,)?
         }
     ) => {
+        $(#[$attr])* 
         impl $crate::core::value::Value<$vtype, $unit> {
             pub $($idt)? fn to_metric(self)
                 -> $crate::core::value::Value<

@@ -14,7 +14,7 @@
 ///     }
 ///     alias alias1, alias2, ... ?
 ///     conversion {
-///         const? (ty1, ty2, ...) {
+///         const? (#[attr]* ty1, #[attr]* ty2, ...) {
 ///             to: |val| { ... },
 ///             from: |val| { ... },
 ///         };

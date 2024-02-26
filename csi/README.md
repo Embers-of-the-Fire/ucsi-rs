@@ -95,7 +95,25 @@ You can find all provided built-in types in the [`units`] module.
 If you want to create your well-defined special type or associated unit,
 see the [`macros`] module for some code generator.
 
+## External crate feature
+
+### `const_soft_float`
+
+Disabled by default, included in the `full` feature.
+
+This library re-exports the
+[`const_soft_float`](https://docs.rs/crate/const_soft_float/0.1.4)
+crate's constant float mathematical operations,
+and the lib's standard associated units offer constant
+conversion method for those types.
+
 ## License
 
 This project is licensed under
 the [MIT License](./LICENSE-MIT) or the [Apache 2.0 License](./LICENSE-APACHE).
+
+## Contribute
+
+This project is still in early development,
+so there is no strict contribution process,
+you can open issues or pull requests as you please!
