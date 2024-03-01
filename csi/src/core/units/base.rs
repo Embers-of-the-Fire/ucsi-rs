@@ -120,6 +120,28 @@ cfg_if! {
     }
 }
 
+/// # Pure value type
+/// 
+/// This struct represents **no unit** value.
+/// 
+/// Implementing two sets of operators (`ops::XXX`) for arbitrary values and arbitrary `Value` values
+/// is not possible due to rust stable's current trait mechanism.
+/// Therefore `PureValue` is provided here to represent unitless quantities.
+/// 
+/// You can use the `cadd/sub/xxx` or `padd/sub/xxx` methods implemented for `Value<int/uint/float, T>`,
+/// but these are only implemented for basic types.
+pub struct PureValue;
+
+impl SiOpsUnit for PureValue {
+    const UNIT_MAP: BaseUnitMap = BaseUnitMap::EMPTY;
+}
+
+impl SiDefinedUnit for PureValue {
+    const DEF: Option<SiDefinedUnitDefinition> = None;
+}
+
+impl SiAnyUnit for PureValue {}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct BaseUnitMap {
     pub meter: Fraction,

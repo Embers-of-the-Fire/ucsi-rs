@@ -348,7 +348,7 @@ __impl_const_float_ops!(
     const_soft_float::soft_f64::SoftF64
 );
 
-impl<T: SiAnyUnit + SiOpsUnit, V: ops::Add<L>, L> ops::Add<Value<L, T>> for Value<V, T> {
+impl<T: SiAnyUnit, V: ops::Add<L>, L> ops::Add<Value<L, T>> for Value<V, T> {
     type Output = Value<V::Output, T>;
 
     #[inline]
@@ -357,7 +357,7 @@ impl<T: SiAnyUnit + SiOpsUnit, V: ops::Add<L>, L> ops::Add<Value<L, T>> for Valu
     }
 }
 
-impl<T: SiAnyUnit + SiOpsUnit, V: ops::Sub<L>, L> ops::Sub<Value<L, T>> for Value<V, T> {
+impl<T: SiAnyUnit, V: ops::Sub<L>, L> ops::Sub<Value<L, T>> for Value<V, T> {
     type Output = Value<V::Output, T>;
 
     #[inline]
