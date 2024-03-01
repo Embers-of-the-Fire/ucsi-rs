@@ -15,8 +15,11 @@ gcd = "2.3.0"
 const_soft_float = { version = "0.1.4", optional = true }
 
 [features]
-default = ["exported_types", "alias_export"]
-full = ["all_types", "internal_macros", "internal_utils", "const_soft_float"]
+default = ["exported_types", "alias_export", "no_std"]
+full = ["all_types", "internal_macros", "internal_utils", "const_soft_float", "no_std"]
+# no alloc / no std
+no_std = []
+no_alloc = []
 # types
 all_types = ["exported_types", "associated_types"]
 associated_types = []

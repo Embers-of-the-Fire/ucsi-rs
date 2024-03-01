@@ -104,9 +104,20 @@
 //! If you want to create your well-defined special type or associated unit,
 //! see the [`macros`] module for some code generator.
 //! 
-//! ## External crate feature
+//! ## Features
 //! 
-//! ### `const_soft_float`
+//! ### `no_std` / `no_alloc`
+
+//! This library offers no-std support and no-alloc support.
+//! 
+//! If `no_std` feature is enabled, `String` and `format!` will be exported from `::alloc`.
+//! 
+//! If `no_alloc` feature is enabled, string-based api like `try_cast` and `format_si`
+//! cannot be used.
+//! 
+//! ### External crate feature
+//! 
+//! #### `const_soft_float`
 //! 
 //! Disabled by default, included in the `full` feature.
 //! 
@@ -117,6 +128,8 @@
 //! conversion method for those types.
 
 #![allow(clippy::module_inception)]
+
+#![cfg_attr(feature = "no_std", no_std)]
 
 /// Core module of the library.
 pub mod core;

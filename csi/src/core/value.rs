@@ -88,9 +88,18 @@
 //! this could be improved in the future. \
 //! Anyway, at least we can check units at compile time.
 
-use std::{fmt, marker::PhantomData, ops};
+use core::{fmt, marker::PhantomData, ops};
 
-use crate::units::any::CastFrom;
+use cfg_if::cfg_if;
+
+cfg_if! {
+    if #[cfg(all(feature = "no_std", not(feature = "no_alloc")))] {
+        extern crate alloc;
+        use alloc::{string::String, format};
+    }
+}
+
+use crate::{units::{any::{CastFrom, SiDefinedUnitDefinition}, base::BaseUnitMap}, SiDefinedUnit};
 
 use super::{
     ops::{Div, Mul, PowFrac, PowI},
@@ -150,6 +159,7 @@ impl<T: SiAnyUnit + SiOpsUnit, V> Value<V, T> {
         Value::new(self.value)
     }
 
+    #[cfg(not(feature = "no_alloc"))]
     #[inline]
     pub fn try_cast<B: SiAnyUnit + SiOpsUnit>(self) -> Result<Value<V, B>, String> {
         if is_same_type::<T, B>() {
@@ -221,6 +231,7 @@ impl<T: SiAnyUnit + SiOpsUnit, V: PartialEq> Value<V, T> {
     }
 }
 
+#[cfg(not(feature = "no_alloc"))]
 impl<T: SiAnyUnit + SiOpsUnit, V: fmt::Display> Value<V, T> {
     #[inline]
     pub fn format_si(&self) -> String {
@@ -395,4 +406,18 @@ impl<T: SiAnyUnit, V: ops::Neg> ops::Neg for Value<V, T> {
     fn neg(self) -> Self::Output {
         Value::new(self.value.neg())
     }
+}
+
+// pure-value
+
+pub struct PureValue;
+
+impl SiAnyUnit for PureValue {}
+
+impl SiOpsUnit for PureValue {
+    const UNIT_MAP: BaseUnitMap = BaseUnitMap::EMPTY;
+}
+
+impl SiDefinedUnit for PureValue {
+    const DEF: Option<SiDefinedUnitDefinition> = None;
 }

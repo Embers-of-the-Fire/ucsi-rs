@@ -5,8 +5,8 @@
 macro_rules! __impl_unwrap_option_const {
     ($op:expr) => {
         match $op {
-            ::std::option::Option::Some(t) => t,
-            ::std::option::Option::None => panic!("called `Option::unwrap()` on a `None` value")
+            ::core::option::Option::Some(t) => t,
+            ::core::option::Option::None => panic!("called `Option::unwrap()` on a `None` value")
         }
     };
 }

@@ -15,7 +15,7 @@
 //! You could use this module by enabling `fraction` feature,
 //! which is included in the `full` or `internal_utils` feature.
 
-use std::{fmt, num::NonZeroU32};
+use core::{fmt, num::NonZeroU32};
 
 use crate::macros::unwrap::unwrap_option_const;
 

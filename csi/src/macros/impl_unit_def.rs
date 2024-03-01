@@ -53,12 +53,12 @@ macro_rules! __impl_si_associated_unit_def {
             }
     
             impl $crate::core::units::any::SiDefinedUnit for $name {
-                const DEF: $crate::core::units::any::SiDefinedUnitDefinition =
-                    $crate::core::units::any::SiDefinedUnitDefinition {
+                const DEF: ::core::option::Option<$crate::core::units::any::SiDefinedUnitDefinition> =
+                    ::core::option::Option::Some($crate::core::units::any::SiDefinedUnitDefinition {
                         full_name: <$name as $crate::core::units::associated::SiAssociatedUnit>::DEF.full_name,
                         short_name: <$name as $crate::core::units::associated::SiAssociatedUnit>::DEF.short_name,
                         unit_symbol: <$name as $crate::core::units::associated::SiAssociatedUnit>::DEF.unit_symbol,
-                    };
+                    });
             }
     
             impl $crate::core::units::any::SiAnyUnit for $name {}
@@ -120,12 +120,12 @@ macro_rules! __impl_si_exported_unit_def {
             }
 
             impl $crate::core::units::any::SiDefinedUnit for $name {
-                const DEF: $crate::core::units::any::SiDefinedUnitDefinition =
-                    $crate::core::units::any::SiDefinedUnitDefinition {
+                const DEF: ::core::option::Option<$crate::core::units::any::SiDefinedUnitDefinition> =
+                    ::core::option::Option::Some($crate::core::units::any::SiDefinedUnitDefinition {
                         full_name: <$name as $crate::core::units::exported::SiExportedUnit>::DEF.full_name,
                         short_name: <$name as $crate::core::units::exported::SiExportedUnit>::DEF.short_name,
                         unit_symbol: <$name as $crate::core::units::exported::SiExportedUnit>::DEF.unit_symbol,
-                    };
+                    });
             }
 
             impl $crate::core::units::any::SiOpsUnit for $name {

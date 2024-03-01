@@ -1,6 +1,6 @@
 //! See [the module-level documentation](super) for more information.
 
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 use crate::{
     core::units::{any::{SiOpsUnit, SiAnyUnit}, base::BaseUnitMap},

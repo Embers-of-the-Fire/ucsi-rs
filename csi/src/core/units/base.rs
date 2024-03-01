@@ -1,4 +1,4 @@
-use std::fmt;
+use core::fmt;
 
 use cfg_if::cfg_if;
 
@@ -37,11 +37,11 @@ macro_rules! __impl_si_base_unit_definition {
             }
 
             impl SiDefinedUnit for $name {
-                const DEF: SiDefinedUnitDefinition = SiDefinedUnitDefinition {
+                const DEF: Option<SiDefinedUnitDefinition> = Some(SiDefinedUnitDefinition {
                     full_name: <$name as SiBaseUnit>::DEF.full_name,
                     short_name: <$name as SiBaseUnit>::DEF.short_name,
                     unit_symbol: <$name as SiBaseUnit>::DEF.unit_symbol,
-                };
+                });
             }
 
             impl SiOpsUnit for $name {
@@ -155,7 +155,7 @@ impl fmt::Display for BaseUnitMap {
 }
 
 impl BaseUnitMap {
-    const EMPTY: BaseUnitMap = BaseUnitMap {
+    pub const EMPTY: BaseUnitMap = BaseUnitMap {
         meter: Fraction::ZERO,
         second: Fraction::ZERO,
         kilogram: Fraction::ZERO,

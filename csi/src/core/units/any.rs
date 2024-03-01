@@ -7,7 +7,7 @@ pub struct SiDefinedUnitDefinition {
 }
 
 pub trait SiDefinedUnit: SiAnyUnit {
-    const DEF: SiDefinedUnitDefinition;
+    const DEF: Option<SiDefinedUnitDefinition>;
 }
 
 pub trait SiOpsUnit: SiAnyUnit {
