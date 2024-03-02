@@ -1,4 +1,4 @@
-/// **Note:** Use the alias `csi::macros::unit_def::si_associated_unit_def`.
+/// **Note:** Use the alias `ucsi::macros::unit_def::si_associated_unit_def`.
 /// 
 /// ## Syntax
 /// 
@@ -10,7 +10,7 @@
 ///     unit UnitName
 ///     based on BaseUnitType {
 ///         // unit static configuration
-///         // see `csi::core::units::associated::SiAssociatedUnitDefinition`.
+///         // see `ucsi::core::units::associated::SiAssociatedUnitDefinition`.
 ///     }
 ///     alias alias1, alias2, ... ?
 ///     conversion {
@@ -75,7 +75,7 @@ macro_rules! __impl_si_associated_unit_def {
     };
 }
 
-/// **Note:** Use the alias `csi::macros::unit_def::si_exported_unit_def`.
+/// **Note:** Use the alias `ucsi::macros::unit_def::si_exported_unit_def`.
 /// 
 /// ## Syntax
 /// 
@@ -87,7 +87,7 @@ macro_rules! __impl_si_associated_unit_def {
 ///     unit UnitName
 ///     based on BaseUnitType {
 ///         // unit static configuration
-///         // see `csi::core::units::associated::SiAssociatedUnitDefinition`.
+///         // see `ucsi::core::units::associated::SiAssociatedUnitDefinition`.
 ///     }
 ///     alias alias1, alias2, ... ?;
 /// 

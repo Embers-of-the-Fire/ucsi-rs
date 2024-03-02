@@ -1,3 +1,3 @@
 [workspace]
-members = ["csi", "csi-test"]
+members = ["ucsi", "ucsi-test"]
 resolver = "2"

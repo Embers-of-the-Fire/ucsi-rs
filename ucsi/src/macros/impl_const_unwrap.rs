@@ -1,4 +1,4 @@
-/// **Note:** Use the alias `csi::macros::unwrap::unwrap_option_const`.
+/// **Note:** Use the alias `ucsi::macros::unwrap::unwrap_option_const`.
 /// 
 /// This will be removed once `Option::unwrap` is const-able.
 #[macro_export]

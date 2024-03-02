@@ -6,11 +6,11 @@
 //! ## Example
 //! 
 //! ```rust
-//! use csi::unit;
-//! use csi::Value;
+//! use ucsi::unit;
+//! use ucsi::Value;
 //! // requires "alias_export" feature
 //! // (included in "full" or default feature)
-//! use csi::units::base::{kg, m, s};
+//! use ucsi::units::base::{kg, m, s};
 //! 
 //! // create a new type
 //! type Newton = unit!((kg * m) / (s ** { 2 }));

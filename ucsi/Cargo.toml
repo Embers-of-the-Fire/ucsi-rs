@@ -1,11 +1,12 @@
 [package]
-name = "csi"
+name = "ucsi"
 version = "0.1.0"
 edition = "2021"
+description = "SI-based unit typing system"
 authors = ["Embers-of-the-Fire <stellarishs@163.com>"]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/Embers-of-the-Fire/csi-rs.git"
+repository = "https://github.com/Embers-of-the-Fire/ucsi-rs.git"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

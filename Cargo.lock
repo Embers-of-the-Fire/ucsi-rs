@@ -15,7 +15,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "87ca1caa64ef4ed453e68bb3db612e51cf1b2f5b871337f0fcab1c8f87cc3dff"
 
 [[package]]
-name = "csi"
+name = "gcd"
+version = "2.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1d758ba1b47b00caf47f24925c0074ecb20d6dfcffe7f6d53395c0465674841a"
+
+[[package]]
+name = "ucsi"
 version = "0.1.0"
 dependencies = [
  "cfg-if",
@@ -24,14 +30,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "csi-test"
+name = "ucsi-test"
 version = "0.1.0"
 dependencies = [
- "csi",
+ "ucsi",
 ]
-
-[[package]]
-name = "gcd"
-version = "2.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1d758ba1b47b00caf47f24925c0074ecb20d6dfcffe7f6d53395c0465674841a"

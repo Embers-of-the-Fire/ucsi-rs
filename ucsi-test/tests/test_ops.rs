@@ -1,6 +1,6 @@
 #![feature(type_alias_impl_trait)]
 
-use csi::{
+use ucsi::{
     core::{
         units::{
             base::{kg, m, s},
@@ -13,7 +13,7 @@ use csi::{
 };
 
 #[test]
-fn test_csi_ops() {
+fn test_ucsi_ops() {
     let speed: Value<f64, unit!(m / s)> = Value::new(10.0);
     let time: Value<f64, s> = Value::new(1.0);
     let acc = speed / time;

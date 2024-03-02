@@ -1,4 +1,4 @@
-/// **Note:** Use the alias `csi::macros::cast::cast_si_value`.
+/// **Note:** Use the alias `ucsi::macros::cast::cast_si_value`.
 /// 
 /// ## Deprecated
 /// 
@@ -7,10 +7,10 @@
 /// ## Example
 /// 
 /// ```rust,ignore
-/// use csi::units::base::m;
-/// use csi::macros::cast::cast_si_value;
-/// use csi::Value;
-/// use csi::unit;
+/// use ucsi::units::base::m;
+/// use ucsi::macros::cast::cast_si_value;
+/// use ucsi::Value;
+/// use ucsi::unit;
 /// 
 /// let raw: Value<f64, m> = Value::new(10.0);
 /// let orig = raw * raw;
@@ -39,7 +39,7 @@ macro_rules! __impl_cast_si_value {
 }
 
 #[cfg(feature = "infer_cast")]
-/// **Note:** Use the alias `csi::macros::cast::infer_cast_si_value`.
+/// **Note:** Use the alias `ucsi::macros::cast::infer_cast_si_value`.
 /// 
 /// ## Deprecated
 /// 

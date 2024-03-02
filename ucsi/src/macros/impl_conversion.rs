@@ -1,4 +1,4 @@
-/// **Note:** Use the alias `csi::macros::conversion::unit_conversion`.
+/// **Note:** Use the alias `ucsi::macros::conversion::unit_conversion`.
 /// 
 /// ## Syntax
 /// 

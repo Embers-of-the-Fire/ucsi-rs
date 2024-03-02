@@ -10,12 +10,12 @@
 //! you can skip them if you've already read the library-level document.
 //!
 //! ```rust
-//! use csi::units::base::{kg, m, s};
-//! use csi::unit;
-//! use csi::Value;
+//! use ucsi::units::base::{kg, m, s};
+//! use ucsi::unit;
+//! use ucsi::Value;
 //!
 //! // create your new unit
-//! // see the `unit` macro or `csi::core::ops` for more information.
+//! // see the `unit` macro or `ucsi::core::ops` for more information.
 //! type Newton = unit!((kg * m) / (s ** { 2 }));
 //!
 //! // build some value
@@ -39,9 +39,9 @@
 //! To clearify the type-casting check, consider the following example:
 //!
 //! ```rust,compile_fail
-//! # use csi::units::base::{kg, m, s};
-//! # use csi::unit;
-//! # use csi::Value;
+//! # use ucsi::units::base::{kg, m, s};
+//! # use ucsi::unit;
+//! # use ucsi::Value;
 //! # type Newton = unit!((kg * m) / (s ** { 2 }));
 //! # let speed: Value<f64, unit!(m / s)> = Value::new(10.0);
 //! # let time: Value<f64, s> = Value::new(1.0);
@@ -54,28 +54,28 @@
 //! The example above cannot compile, and will throw some error like this:
 //!
 //! ```plain
-//! error[E0080]: evaluation of `<Second as CastFrom<csi::ops::Mul<csi::ops::Div<csi::ops::Div<Meter, Second>, Second>,
+//! error[E0080]: evaluation of `<Second as CastFrom<ucsi::ops::Mul<ucsi::ops::Div<ucsi::ops::Div<Meter, Second>, Second>,
 //! Kilogram>>>::CAN_CAST_FROM` failed
-//! --> D:\WBH\rust\csi\csi\src\core\units\any.rs:25:9
+//! --> D:\WBH\rust\ucsi\ucsi\src\core\units\any.rs:25:9
 //!    |
 //! 25 |         panic!("cannot cast si type")
-//!    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the evaluated program panicked at 'cannot cast si type', D:\WBH\rust\csi\csi\src\core\units\any.rs:25:9
+//!    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the evaluated program panicked at 'cannot cast si type', D:\WBH\rust\ucsi\ucsi\src\core\units\any.rs:25:9
 //!    |
-//! note: inside `is_same_type_or_panic::<csi::ops::Mul<csi::ops::Div<csi::ops::Div<Meter, Second>, Second>, Kilogram>,
+//! note: inside `is_same_type_or_panic::<ucsi::ops::Mul<ucsi::ops::Div<ucsi::ops::Div<Meter, Second>, Second>, Kilogram>,
 //! Second>`
-//! --> D:\WBH\rust\csi\csi\src\core\units\any.rs:25:9
+//! --> D:\WBH\rust\ucsi\ucsi\src\core\units\any.rs:25:9
 //!    |
 //! 25 |         panic!("cannot cast si type")
 //!    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-//! note: inside `<Second as CastFrom<csi::ops::Mul<csi::ops::Div<csi::ops::Div<Meter, Second>, Second>, Kilogram>>>::CAN_CAST_FROM`
-//! --> D:\WBH\rust\csi\csi\src\core\units\any.rs:36:9
+//! note: inside `<Second as CastFrom<ucsi::ops::Mul<ucsi::ops::Div<ucsi::ops::Div<Meter, Second>, Second>, Kilogram>>>::CAN_CAST_FROM`
+//! --> D:\WBH\rust\ucsi\ucsi\src\core\units\any.rs:36:9
 //!    |
 //! 36 |         is_same_type_or_panic::<T, B>();
 //!    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 //!  = note: this error originates in the macro `$crate::panic::panic_2021` which comes from the expansion of the macro `panic` (in Nightly builds, run with -Z macro-backtrace for more info)
 //!
-//! note: the above error was encountered while instantiating `fn csi::Value::<f64, csi::ops::Mul<csi::ops::Div<csi::ops::Div<csi::units::base::Meter, csi::units::base::Second>, csi::units::base::Second>, csi::units::base::Kilogram>>::cast_const::<csi::units::base::Second>`
-//! --> csi-test\tests\test_ops.rs:26:25
+//! note: the above error was encountered while instantiating `fn ucsi::Value::<f64, ucsi::ops::Mul<ucsi::ops::Div<ucsi::ops::Div<ucsi::units::base::Meter, ucsi::units::base::Second>, ucsi::units::base::Second>, ucsi::units::base::Kilogram>>::cast_const::<ucsi::units::base::Second>`
+//! --> ucsi-test\tests\test_ops.rs:26:25
 //!    |
 //! 26 |     let s_can_never_be_newton: Value<_, s> = force.cast_const();
 //!    |                                              ^^^^^^^^^^^^^^^^^^
