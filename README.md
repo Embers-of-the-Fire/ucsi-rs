@@ -1,6 +1,6 @@
 # The `ucsi` library
 
-The ucsi library provides SI-based unit typing system
+The `ucsi` library provides SI-based unit typing system
 and zero-cost unit wrapper for values.
 
 You can use the values of these packages for normal arithmetic
