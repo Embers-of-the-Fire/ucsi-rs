@@ -37,12 +37,3 @@ impl<T: SiOpsUnit, B: SiOpsUnit> CastFrom<T> for B {
         true
     };
 }
-
-pub trait CastTo<B: SiOpsUnit> {
-    /// This should be theoretically `true` and should never be `false`.
-    const CAN_CAST_TO: bool;
-}
-
-impl<T: SiOpsUnit, B: SiOpsUnit + CastFrom<T>> CastTo<B> for T {
-    const CAN_CAST_TO: bool = <B as CastFrom<T>>::CAN_CAST_FROM;
-}
