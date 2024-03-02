@@ -1,5 +1,9 @@
 /// **Note:** Use the alias `csi::macros::cast::cast_si_value`.
 /// 
+/// ## Deprecated
+/// 
+/// Under most circumstances [`Value::cast`] / [`Value::cast_const`] can be used instead.
+/// 
 /// ## Example
 /// 
 /// ```rust,ignore
@@ -37,6 +41,10 @@ macro_rules! __impl_cast_si_value {
 #[cfg(feature = "infer_cast")]
 /// **Note:** Use the alias `csi::macros::cast::infer_cast_si_value`.
 /// 
+/// ## Deprecated
+/// 
+/// Under most circumstances [`Value::cast`] / [`Value::cast_const`] can be used instead.
+/// 
 /// ## Syntax
 /// 
 /// ```rust,ignore
@@ -49,6 +57,10 @@ macro_rules! __impl_cast_si_value {
 /// but infers the origin expression's value with the help of `type_alias_impl_trait`(TAIT).
 /// 
 /// You must enable the TAIT feature when you call this macro.
+/// 
+/// ```rust,ignore
+/// #![feature(type_alias_impl_trait)]
+/// ```
 /// 
 /// **Note:** This macro requires the `infer_cast` library feature to be enabled.
 #[macro_export]
