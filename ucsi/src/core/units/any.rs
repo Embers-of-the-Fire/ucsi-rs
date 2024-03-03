@@ -1,3 +1,5 @@
+use core::fmt::{self, Write};
+
 use super::base::BaseUnitMap;
 
 pub struct SiDefinedUnitDefinition {
@@ -7,7 +9,19 @@ pub struct SiDefinedUnitDefinition {
 }
 
 pub trait SiDefinedUnit: SiAnyUnit {
-    const DEF: Option<SiDefinedUnitDefinition>;
+    const DEF: SiDefinedUnitDefinition;
+}
+
+impl<T: SiDefinedUnit + SiOpsUnit> SiDisplayableUnit for T {
+    const DISPLAYABLE: bool = true;
+
+    fn display_symbol(w: &mut impl Write) -> fmt::Result {
+        write!(w, "{}", Self::DEF.unit_symbol)
+    }
+
+    fn display_symbol_wrapped(w: &mut impl Write) -> fmt::Result {
+        Self::display_symbol(w)
+    }
 }
 
 pub trait SiOpsUnit: SiAnyUnit {
@@ -24,6 +38,18 @@ pub const fn is_same_type_or_panic<T: SiOpsUnit, U: SiOpsUnit>() {
     if !is_same_type::<T, U>() {
         panic!("cannot cast si type")
     }
+}
+
+pub trait SiDisplayableUnit {
+    const DISPLAYABLE: bool;
+
+    fn display_symbol_wrapped(w: &mut impl Write) -> fmt::Result {
+        write!(w, "(")?;
+        Self::display_symbol(w)?;
+        write!(w, ")")
+    }
+
+    fn display_symbol(w: &mut impl Write) -> fmt::Result;
 }
 
 pub trait CastFrom<T: SiOpsUnit> {

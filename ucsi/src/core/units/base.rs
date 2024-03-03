@@ -4,7 +4,7 @@ use cfg_if::cfg_if;
 
 use crate::fraction::Fraction;
 
-use super::any::{SiAnyUnit, SiDefinedUnit, SiDefinedUnitDefinition, SiOpsUnit};
+use super::any::{SiAnyUnit, SiDefinedUnit, SiDefinedUnitDefinition, SiDisplayableUnit, SiOpsUnit};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct SiBaseUnitDefinition {
@@ -37,11 +37,11 @@ macro_rules! __impl_si_base_unit_definition {
             }
 
             impl SiDefinedUnit for $name {
-                const DEF: Option<SiDefinedUnitDefinition> = Some(SiDefinedUnitDefinition {
+                const DEF: SiDefinedUnitDefinition = SiDefinedUnitDefinition {
                     full_name: <$name as SiBaseUnit>::DEF.full_name,
                     short_name: <$name as SiBaseUnit>::DEF.short_name,
                     unit_symbol: <$name as SiBaseUnit>::DEF.unit_symbol,
-                });
+                };
             }
 
             impl SiOpsUnit for $name {
@@ -121,13 +121,13 @@ cfg_if! {
 }
 
 /// # Pure value type
-/// 
+///
 /// This struct represents **no unit** value.
-/// 
+///
 /// Implementing two sets of operators (`ops::XXX`) for arbitrary values and arbitrary `Value` values
 /// is not possible due to rust stable's current trait mechanism.
 /// Therefore `PureValue` is provided here to represent unitless quantities.
-/// 
+///
 /// You can use the `cadd/sub/xxx` or `padd/sub/xxx` methods implemented for `Value<int/uint/float, T>`,
 /// but these are only implemented for basic types.
 pub struct PureValue;
@@ -136,11 +136,19 @@ impl SiOpsUnit for PureValue {
     const UNIT_MAP: BaseUnitMap = BaseUnitMap::EMPTY;
 }
 
-impl SiDefinedUnit for PureValue {
-    const DEF: Option<SiDefinedUnitDefinition> = None;
-}
-
 impl SiAnyUnit for PureValue {}
+
+impl SiDisplayableUnit for PureValue {
+    const DISPLAYABLE: bool = false;
+
+    fn display_symbol(_w: &mut impl fmt::Write) -> fmt::Result {
+        Ok(())
+    }
+
+    fn display_symbol_wrapped(_w: &mut impl fmt::Write) -> fmt::Result {
+        Ok(())
+    }
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct BaseUnitMap {

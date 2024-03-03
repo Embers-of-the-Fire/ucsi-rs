@@ -99,7 +99,7 @@ cfg_if! {
     }
 }
 
-use crate::{units::{any::{CastFrom, SiDefinedUnitDefinition}, base::BaseUnitMap}, SiDefinedUnit};
+use crate::units::any::{CastFrom, SiDisplayableUnit};
 
 use super::{
     ops::{Div, Mul, PowFrac, PowI},
@@ -234,8 +234,25 @@ impl<T: SiAnyUnit + SiOpsUnit, V: PartialEq> Value<V, T> {
 #[cfg(not(feature = "no_alloc"))]
 impl<T: SiAnyUnit + SiOpsUnit, V: fmt::Display> Value<V, T> {
     #[inline]
-    pub fn format_si(&self) -> String {
+    pub fn display_si(&self) -> String {
         format!("{} ({})", self.value, T::UNIT_MAP)
+    }
+}
+
+#[cfg(not(feature = "no_alloc"))]
+impl<T: SiAnyUnit + SiOpsUnit, V> Value<V, T> {
+    #[inline]
+    pub fn display_si_symbol(&self) -> String {
+        format!("{}", T::UNIT_MAP)
+    }
+}
+
+#[cfg(not(feature = "no_alloc"))]
+impl<T: SiAnyUnit + SiOpsUnit + SiDisplayableUnit, V> Value<V, T> {
+    pub fn display_symbol(&self) -> Result<String, fmt::Error> {
+        let mut string = String::new();
+        T::display_symbol(&mut string)?;
+        Ok(string)
     }
 }
 
@@ -406,18 +423,4 @@ impl<T: SiAnyUnit, V: ops::Neg> ops::Neg for Value<V, T> {
     fn neg(self) -> Self::Output {
         Value::new(self.value.neg())
     }
-}
-
-// pure-value
-
-pub struct PureValue;
-
-impl SiAnyUnit for PureValue {}
-
-impl SiOpsUnit for PureValue {
-    const UNIT_MAP: BaseUnitMap = BaseUnitMap::EMPTY;
-}
-
-impl SiDefinedUnit for PureValue {
-    const DEF: Option<SiDefinedUnitDefinition> = None;
 }
