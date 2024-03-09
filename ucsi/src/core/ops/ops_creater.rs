@@ -36,3 +36,18 @@ macro_rules! __unit_impl {
         $expr
     };
 }
+
+#[macro_export]
+macro_rules! val {
+    ($ident:ident * $tt:tt) => {
+        $crate::core::value::Value::<_, $crate::unit!($tt)>::new($ident)
+    };
+
+    ($lit:literal * $tt:tt) => {
+        $crate::core::value::Value::<_, $crate::unit!($tt)>::new($lit)
+    };
+
+    (($expr:expr) * $tt:tt) => {
+        $crate::core::value::Value::<_, $crate::unit!($tt)>::new($expr)
+    };
+}
