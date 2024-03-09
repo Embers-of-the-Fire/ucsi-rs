@@ -1,10 +1,18 @@
-use core::fmt;
+use core::fmt::{self, Write};
 
 use cfg_if::cfg_if;
 
 use crate::fraction::Fraction;
 
 use super::any::{SiAnyUnit, SiDefinedUnit, SiDefinedUnitDefinition, SiDisplayableUnit, SiOpsUnit};
+
+cfg_if! {
+    if #[cfg(not(feature = "no_alloc"))] {
+        extern crate alloc;
+
+        use alloc::string::{String, ToString};
+    }
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct SiBaseUnitDefinition {
@@ -159,29 +167,6 @@ pub struct BaseUnitMap {
     pub kelvins: Fraction,
     pub mole: Fraction,
     pub candela: Fraction,
-}
-
-impl fmt::Display for BaseUnitMap {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut it = self
-            .unit_fields()
-            .into_iter()
-            .filter(|(_, x)| !x.is_zero())
-            .peekable();
-
-        if it.peek().is_none() {
-            return write!(f, "pure value");
-        }
-
-        while let Some((name, num)) = it.next() {
-            write!(f, "{}^({})", name, num)?;
-            if it.peek().is_some() {
-                write!(f, " + ")?;
-            }
-        }
-
-        Ok(())
-    }
 }
 
 impl BaseUnitMap {

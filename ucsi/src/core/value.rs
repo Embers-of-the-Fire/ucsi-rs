@@ -90,16 +90,10 @@
 
 use core::{fmt, marker::PhantomData, ops};
 
-use cfg_if::cfg_if;
-
-cfg_if! {
-    if #[cfg(all(feature = "no_std", not(feature = "no_alloc")))] {
-        extern crate alloc;
-        use alloc::{string::String, format};
-    }
-}
-
-use crate::units::any::{CastFrom, SiDisplayableUnit};
+use crate::{
+    __dbg_assert,
+    units::any::CastFrom,
+};
 
 use super::{
     ops::{Div, Mul, PowFrac, PowI},
@@ -155,26 +149,8 @@ impl<T: SiAnyUnit, V> Value<V, T> {
 impl<T: SiAnyUnit + SiOpsUnit, V> Value<V, T> {
     #[inline]
     pub fn cast<B: SiAnyUnit + SiOpsUnit + CastFrom<T>>(self) -> Value<V, B> {
-        debug_assert!(B::CAN_CAST_FROM);
+        __dbg_assert!(B::CAN_CAST_FROM);
         Value::new(self.value)
-    }
-
-    #[cfg(not(feature = "no_alloc"))]
-    #[inline]
-    pub fn try_cast<B: SiAnyUnit + SiOpsUnit>(self) -> Result<Value<V, B>, String> {
-        if is_same_type::<T, B>() {
-            Ok(Value::new(self.value))
-        } else {
-            Err(format!(
-                r#"
-cannot cast SI value
-origin: {}
-target: {}
-"#,
-                T::UNIT_MAP,
-                B::UNIT_MAP
-            ))
-        }
     }
 
     /// # Safety
@@ -203,7 +179,7 @@ target: {}
 impl<T: SiAnyUnit + SiOpsUnit, V: Copy> Value<V, T> {
     #[inline]
     pub const fn cast_const<B: SiAnyUnit + SiOpsUnit + CastFrom<T>>(self) -> Value<V, B> {
-        assert!(B::CAN_CAST_FROM);
+        __dbg_assert!(B::CAN_CAST_FROM);
         Value::new(self.value)
     }
 
@@ -228,31 +204,6 @@ impl<T: SiAnyUnit + SiOpsUnit, V: PartialEq> Value<V, T> {
     #[inline]
     pub fn is_equal<R: SiAnyUnit + SiOpsUnit>(&self, rhs: &Value<V, R>) -> bool {
         is_same_type::<T, R>() && self.is_value_equal(rhs)
-    }
-}
-
-#[cfg(not(feature = "no_alloc"))]
-impl<T: SiAnyUnit + SiOpsUnit, V: fmt::Display> Value<V, T> {
-    #[inline]
-    pub fn display_si(&self) -> String {
-        format!("{} ({})", self.value, T::UNIT_MAP)
-    }
-}
-
-#[cfg(not(feature = "no_alloc"))]
-impl<T: SiAnyUnit + SiOpsUnit, V> Value<V, T> {
-    #[inline]
-    pub fn display_si_symbol(&self) -> String {
-        format!("{}", T::UNIT_MAP)
-    }
-}
-
-#[cfg(not(feature = "no_alloc"))]
-impl<T: SiAnyUnit + SiOpsUnit + SiDisplayableUnit, V> Value<V, T> {
-    pub fn display_symbol(&self) -> Result<String, fmt::Error> {
-        let mut string = String::new();
-        T::display_symbol(&mut string)?;
-        Ok(string)
     }
 }
 
