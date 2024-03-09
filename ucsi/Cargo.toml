@@ -21,6 +21,8 @@ full = ["all_types", "internal_macros", "internal_utils", "const_soft_float", "n
 # no alloc / no std
 no_std = []
 no_alloc = []
+# type cast assert
+force_assert = []
 # types
 all_types = ["exported_types", "associated_types"]
 associated_types = []
