@@ -8,3 +8,4 @@ publish = false
 
 [dependencies]
 ucsi = { path = "../ucsi", features = ["full", "nightly_full", "force_assert"] }
+datastruct = "0.1.1"

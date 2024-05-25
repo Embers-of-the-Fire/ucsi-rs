@@ -6,3 +6,6 @@ pub mod ops;
 
 /// Values with unit.
 pub mod value;
+
+#[cfg(feature = "use_alloc")]
+pub mod format;

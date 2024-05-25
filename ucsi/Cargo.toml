@@ -14,13 +14,15 @@ repository = "https://github.com/Embers-of-the-Fire/ucsi-rs.git"
 cfg-if = "1.0.0"
 gcd = "2.3.0"
 const_soft_float = { version = "0.1.4", optional = true }
+itertools = { version = "0.12.1", default-features = false }
+datastruct = "0.1.1"
 
 [features]
-default = ["exported_types", "alias_export", "no_std"]
-full = ["all_types", "internal_macros", "internal_utils", "const_soft_float", "no_std"]
+default = ["exported_types", "alias_export", "use_alloc"]
+full = ["all_types", "internal_macros", "internal_utils", "const_soft_float", "use_alloc"]
 # no alloc / no std
-no_std = []
-no_alloc = []
+use_std = ["itertools/use_std"]
+use_alloc = ["itertools/use_alloc"]
 # type cast assert
 force_assert = []
 # types

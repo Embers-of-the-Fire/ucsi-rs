@@ -101,9 +101,9 @@ see the [`macros`] module for some code generator.
 
 This library offers no-std support and no-alloc support.
 
-If `no_std` feature is enabled, `String` and `format!` will be exported from `::alloc`.
+If `use_std` feature is not enabled, `String` and `format!` will be exported from `::alloc`.
 
-If `no_alloc` feature is enabled, string-based api like `try_cast` and `format_si`
+If `use_alloc` feature is not enabled, string-based api like most formatter
 cannot be used.
 
 ### External crate feature

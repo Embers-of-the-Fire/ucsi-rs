@@ -17,6 +17,7 @@ use crate::{
 /// See [the `unit` macro][unit-macro] for more information.
 ///
 /// [unit-macro]: crate::unit
+#[derive(Default)]
 pub struct Mul<L: SiOpsUnit, R: SiOpsUnit> {
     _l: PhantomData<L>,
     _r: PhantomData<R>,
@@ -68,6 +69,7 @@ impl<L: SiOpsUnit + SiDisplayableUnit, R: SiOpsUnit + SiDisplayableUnit> SiDispl
 /// See [the `unit` macro][unit-macro] for more information.
 ///
 /// [unit-macro]: crate::unit
+#[derive(Default)]
 pub struct Div<N: SiOpsUnit, D: SiOpsUnit> {
     _n: PhantomData<N>,
     _d: PhantomData<D>,
@@ -119,6 +121,7 @@ impl<N: SiOpsUnit + SiDisplayableUnit, D: SiOpsUnit + SiDisplayableUnit> SiDispl
 /// See [the `unit` macro][unit-macro] for more information.
 ///
 /// [unit-macro]: crate::unit
+#[derive(Default)]
 pub struct PowI<B: SiOpsUnit, const P: i32> {
     _b: PhantomData<B>,
 }
@@ -165,6 +168,7 @@ impl<B: SiOpsUnit + SiDisplayableUnit, const P: i32> SiDisplayableUnit for PowI<
 /// See [the `unit` macro][unit-macro] for more information.
 ///
 /// [unit-macro]: crate::unit
+#[derive(Default)]
 pub struct PowFrac<B: SiOpsUnit, const N: i32, const D: u32> {
     _b: PhantomData<B>,
 }
@@ -182,7 +186,9 @@ impl<B: SiOpsUnit, const N: i32, const D: u32> SiOpsUnit for PowFrac<B, N, D> {
 
 impl<B: SiOpsUnit, const N: i32, const D: u32> SiAnyUnit for PowFrac<B, N, D> {}
 
-impl<B: SiOpsUnit + SiDisplayableUnit, const N: i32, const D: u32> SiDisplayableUnit for PowFrac<B, N, D> {
+impl<B: SiOpsUnit + SiDisplayableUnit, const N: i32, const D: u32> SiDisplayableUnit
+    for PowFrac<B, N, D>
+{
     const DISPLAYABLE: bool = B::DISPLAYABLE;
 
     fn display_symbol(w: &mut impl fmt::Write) -> fmt::Result {

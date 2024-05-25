@@ -1,17 +1,17 @@
 //! # The `fraction` module.
-//! 
+//!
 //! This module includes a manually implemented constant fraction,
 //! which is used to represent the units.
-//! 
+//!
 //! Currently rust does not compute floating point numbers in a constant environment,
 //! due to some hardware or software issue.
 //! So using a simple fraction system can solve this problem to some extent.
-//! 
+//!
 //! This feature is not well considered for performance,
 //! as they are not designed to be used in real-world applications,
 //! and rough implementations are perfectly adequate at compile time.
 //! There may be optimisations planned for the future, but at least not right now.
-//! 
+//!
 //! You could use this module by enabling `fraction` feature,
 //! which is included in the `full` or `internal_utils` feature.
 
@@ -158,6 +158,57 @@ impl Fraction {
             lhs2.0 * rhs2.0,
             unwrap_option_const!(lhs2.1.checked_mul(rhs2.1)),
         )
+    }
+
+    #[inline]
+    pub fn format_plain(&self, w: &mut impl fmt::Write) -> fmt::Result {
+        if self.denominator().get() == 1 && self.numerator() >= 0 {
+            write!(w, "{}", self.numerator())
+        } else if self.denominator().get() == 1 {
+            write!(w, "({})", self.numerator())
+        } else {
+            write!(w, "({}/{})", self.numerator(), self.denominator().get())
+        }
+    }
+
+    #[inline]
+    pub fn format_plain_wrap(
+        &self,
+        w: &mut impl fmt::Write,
+        (left, right): (&str, &str),
+    ) -> fmt::Result {
+        if self.denominator().get() == 1 && self.numerator() >= 0 {
+            write!(w, "{}", self.numerator())
+        } else if self.denominator().get() == 1 {
+            write!(w, "{}{}{}", left, self.numerator(), right)
+        } else {
+            write!(
+                w,
+                "{}{}/{}{}",
+                left,
+                self.numerator(),
+                self.denominator().get(),
+                right
+            )
+        }
+    }
+
+    #[inline]
+    pub fn format_latex(&self, w: &mut impl fmt::Write) -> fmt::Result {
+        if self.denominator().get() == 1 {
+            if self.numerator() >= 0 {
+                write!(w, "{}", self.numerator())
+            } else {
+                write!(w, "{{{}}}", self.numerator())
+            }
+        } else {
+            write!(
+                w,
+                r"\frac {{{}}}{{{}}}",
+                self.numerator(),
+                self.denominator().get()
+            )
+        }
     }
 }
 

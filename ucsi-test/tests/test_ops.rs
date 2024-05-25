@@ -1,4 +1,3 @@
-#![feature(type_alias_impl_trait)]
 #![allow(unused_variables)]
 
 use std::error::Error;
@@ -11,7 +10,6 @@ use ucsi::{
         },
         value::Value,
     },
-    macros::cast::{cast_si_value, infer_cast_si_value},
     unit, units::any::{SiOpsUnit, CastFrom}, val,
 };
 
@@ -22,10 +20,6 @@ fn test_ucsi_ops() {
     let acc = speed / time;
     let mass = val!(1.0 * kg);
     let force = acc * mass;
-    let checked_force = cast_si_value!(force => unit!(((m / s) / s) * kg) as Newton);
-    // println!("{}", checked_force.display_si().unwrap());
-    let checked_force = infer_cast_si_value!(force => Newton);
-    // println!("{}", checked_force.display_si().unwrap());
     let checked_force = force.cast_const::<Newton>();
     // println!("{}", checked_force.display_si().unwrap());
     // println!("{}", checked_force.display_si_latex().unwrap());

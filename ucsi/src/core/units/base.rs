@@ -7,7 +7,7 @@ use crate::fraction::Fraction;
 use super::any::{SiAnyUnit, SiDefinedUnit, SiDefinedUnitDefinition, SiDisplayableUnit, SiOpsUnit};
 
 cfg_if! {
-    if #[cfg(not(feature = "no_alloc"))] {
+    if #[cfg(feature = "use_alloc")] {
         extern crate alloc;
 
         use alloc::string::{String, ToString};
